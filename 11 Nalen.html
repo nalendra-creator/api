@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Video</title>
+    <style>
+        body {
+            background-color: #0F0F0F;
+        }
+        img {
+            width: 50%;
+        }
+        .playlist-video {
+            text-align: center;
+            color: #F1F1F1;
+        }
+        .play {
+            text-align: center;
+            color: #F1F1F1;
+        }
+        span {
+            color: #7e1111;
+        }
+        button {
+            background-color: #7e1111;
+            border-radius: 20px;
+
+        }
+        .item {
+            margin-bottom: 5%;
+            transition: all 0.3s ease;
+
+        }
+        .item:hover {
+            transform: scale(1.1);
+            background-color: #252525;
+            border-radius: 20%;
+        }
+    </style>
+</head>
+<body>
+    <div class="playlist-video">
+        <h1>Playlist <span>Video</span></h1>
+        <button onclick="playlist()">playlist video</button>
+    </div>
+    <div class="play">
+        </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function playlist() {
+            const settings = {
+                async: true,
+                crossDomain: true,
+                url: 'https://youtube138.p.rapidapi.com/playlist/videos/?id=PLcirGkCPmbmFeQ1sm4wFciF03D_EroIfr&hl=en&gl=US',
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': 'bbddc7b4d4mshd7ba39f49700446p1851ebjsn2283217f1d40',
+                    'x-rapidapi-host': 'youtube138.p.rapidapi.com'
+                }
+            };
+
+            $.ajax(settings).done(function (response) {
+                let html = "";
+
+                const items = response.contents;
+
+                for (let i = 0; i < items.length; i++) {
+                    const video = items[i].video;
+
+                    const thumb = video.thumbnails[0].url;
+                    const channel = video.author.title;
+                    const duration = video.lengthSeconds;
+
+                    html += `
+                        <div class="item">
+                            <img src="${thumb}">
+                            <h2>${channel}</h2>
+                            <p>${duration} detik</p>
+                        </div>
+                    `;
+                }
+
+                $(".play").html(html);
+            });
+            }
+    </script>
+</body>
+</html>
